@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GB_Homework Notes App</string>
+    <string name="toolbar_text">Мои заметки</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_note_btn">Новая заметка</string>
 </resources>
