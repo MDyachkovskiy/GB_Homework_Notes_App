@@ -18,43 +18,41 @@ import androidx.fragment.app.FragmentTransaction;
 public class NotesListFragment extends Fragment {
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_notes_list, container, false);
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        String[] titles = getResources().getStringArray(R.array.titles);
-
-        for (int i = 0; i < titles.length; i++) {
-            initNotesList(view, i);
-        }
+        initNotesList(view);
     }
 
-    private void initNotesList(View view, int b) {
+    private void initNotesList(View view) {
         FrameLayout noteListFragment = getView().findViewById(R.id.note_list_fragment);
-
-        int i = b;
-
-        TextView titleTextView = getView().findViewById(R.id.note_title);
-        TextView dateTextView = getView().findViewById(R.id.note_date);
-        TextView descriptionTextView = getView().findViewById(R.id.note_description);
 
         String[] titles = getResources().getStringArray(R.array.titles);
         String[] dates = getResources().getStringArray(R.array.dates);
         String[] notes = getResources().getStringArray(R.array.notes);
 
-        titleTextView.setText(titles[i]);
-        dateTextView.setText(dates[i]);
-        descriptionTextView.setText(notes[i]);
+        TextView titleTextView = getView().findViewById(R.id.note_title);
+        TextView dateTextView = getView().findViewById(R.id.note_date);
+        TextView descriptionTextView = getView().findViewById(R.id.note_description);
+
+        for (int i = 0; i < titles.length; i++) {
+
+            titleTextView.setText(titles[i]);
+            dateTextView.setText(dates[i]);
+            descriptionTextView.setText(notes[i]);
             noteListFragment.setOnClickListener(v -> {
-                showNotesBlankFragment(i);
+                showNotesBlankFragment(1);
             });
+        }
     }
 
     private void showNotesBlankFragment(int index) {
@@ -94,7 +92,7 @@ public class NotesListFragment extends Fragment {
         data.putInt("index", index);
         blankFragment.setArguments(data);
 
-        fragmentTransaction.add(R.id.note_list_fragment, blankFragment);
+        fragmentTransaction.add(R.id.blank_fragment, blankFragment);
         fragmentTransaction.addToBackStack("");
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
