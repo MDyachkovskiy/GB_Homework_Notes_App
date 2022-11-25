@@ -17,19 +17,43 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class NotesListFragment extends Fragment {
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notes_list, container, false);
+    // создание константы для хранения Parcelable значений
+    static final String SELECTED_DATA ="data";
 
+    // объявляем объект для хранения значений из фрагмента
+    private Data data;
+
+    // создание пустого конструктора
+    public NotesListFragment () {
     }
 
-    // для коммита
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState){
+        outState.putParcelable(SELECTED_DATA, data);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override // создание фрагмента
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_notes_list, container, false);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initNotesList(view);
+
+        // если в savedInstanceState что-то помещено, то извлекаем и помещаем в объект data
+        if (savedInstanceState != null) {
+            data = savedInstanceState.getParcelable(SELECTED_DATA);
+        }
+
+        initNotesList(view.findViewById(R.id.note_list_fragment));
     }
 
     private void initNotesList(View view) {
@@ -54,8 +78,13 @@ public class NotesListFragment extends Fragment {
         }
     }
 
+    private boolean isLandscape() {
+        return getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
     private void showNotesBlankFragment(int index) {
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (isLandscape()) {
             showLandNotesBlank(index);
         } else {
             showPortNotesBlank(index);
@@ -64,33 +93,21 @@ public class NotesListFragment extends Fragment {
 
     private void showLandNotesBlank(int index) {
         //создание нового фрагмента
-        NotesBlankFragment blankFragment = new NotesBlankFragment();
+        NotesBlankFragment blankFragment = NotesBlankFragment.newInstance(data);
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        Bundle data = new Bundle();
-        data.putInt("index", index);
-        blankFragment.setArguments(data);
-
-
         fragmentTransaction.replace(R.id.fragment_container_2, blankFragment);
-
         fragmentTransaction.addToBackStack("");
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
     }
 
     private void showPortNotesBlank(int index) {
-        NotesBlankFragment blankFragment = new NotesBlankFragment();
+        NotesBlankFragment blankFragment = NotesBlankFragment.newInstance(data);
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        Bundle data = new Bundle();
-        data.putInt("index", index);
-        blankFragment.setArguments(data);
-
         fragmentTransaction.add(R.id.blank_fragment, blankFragment);
         fragmentTransaction.addToBackStack("");
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
