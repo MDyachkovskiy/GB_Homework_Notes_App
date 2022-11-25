@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +22,7 @@ public class NotesListFragment extends Fragment {
 
     // объявляем объект для хранения значений из фрагмента
     private Data data;
+    private ViewGroup parent;
 
     // создание пустого конструктора
     public NotesListFragment () {
@@ -57,23 +58,15 @@ public class NotesListFragment extends Fragment {
     }
 
     private void initNotesList(View view) {
-        FrameLayout noteListFragment = getView().findViewById(R.id.note_list_fragment);
-
-        String[] titles = getResources().getStringArray(R.array.titles);
-        String[] dates = getResources().getStringArray(R.array.dates);
-        String[] notes = getResources().getStringArray(R.array.notes);
-
-        TextView titleTextView = getView().findViewById(R.id.note_title);
-        TextView dateTextView = getView().findViewById(R.id.note_date);
-        TextView descriptionTextView = getView().findViewById(R.id.note_description);
-
-        for (int i = 0; i < titles.length; i++) {
-
-            titleTextView.setText(titles[i]);
-            dateTextView.setText(dates[i]);
-            descriptionTextView.setText(notes[i]);
-            noteListFragment.setOnClickListener(v -> {
-                showNotesBlankFragment(1);
+        LinearLayout layoutView = (LinearLayout) view;
+        for (int i = 0; i < Data.getNotes().length; i++) {
+            TextView tv = new TextView(getContext());
+            tv.setText(Data.getNotes()[i].getTitle());
+            tv.setTextSize(24);
+            layoutView.addView(tv);
+            final int index = i;
+            tv.setOnClickListener(v -> {
+                showNotesBlankFragment(Data.getNotes()[index]);
             });
         }
     }
@@ -83,15 +76,15 @@ public class NotesListFragment extends Fragment {
                 == Configuration.ORIENTATION_LANDSCAPE;
     }
 
-    private void showNotesBlankFragment(int index) {
+    private void showNotesBlankFragment(Data data) {
         if (isLandscape()) {
-            showLandNotesBlank(index);
+            showLandNotesBlank(data);
         } else {
-            showPortNotesBlank(index);
+            showPortNotesBlank(data);
         }
     }
 
-    private void showLandNotesBlank(int index) {
+    private void showLandNotesBlank(Data data) {
         //создание нового фрагмента
         NotesBlankFragment blankFragment = NotesBlankFragment.newInstance(data);
 
@@ -103,7 +96,7 @@ public class NotesListFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    private void showPortNotesBlank(int index) {
+    private void showPortNotesBlank(Data data) {
         NotesBlankFragment blankFragment = NotesBlankFragment.newInstance(data);
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();

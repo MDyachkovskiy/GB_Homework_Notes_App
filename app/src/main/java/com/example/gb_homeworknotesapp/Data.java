@@ -1,24 +1,30 @@
 package com.example.gb_homeworknotesapp;
 
-import static androidx.appcompat.graphics.drawable.DrawableContainer.Api21Impl.getResources;
 
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.res.Resources;
+import android.os.BaseBundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.IconCompat;
+import androidx.fragment.app.Fragment;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Data implements Parcelable {
+public class Data extends Fragment implements Parcelable{
 
     private static Data[] notes;
 
-    private int id;
     private String title;
     private String description;
     private String creationDate;
 
     protected Data(Parcel in) {
-        id = in.readInt();
         title = in.readString();
         description = in.readString();
     }
@@ -41,14 +47,6 @@ public class Data implements Parcelable {
 
     public static void setNotes(Data[] notes) {
         Data.notes = notes;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -89,19 +87,19 @@ public class Data implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
         parcel.writeString(title);
         parcel.writeString(description);
     }
 
-    static {
+    {
         notes = new Data[5];
         for (int i = 0; i < notes.length; i++) {
-            notes[i] = Data.initData(i);
+            notes[i] = initData(i);
         }
     }
 
-    private static Data initData(int i) {
+    @SuppressLint("DefaultLocale")
+    private Data initData(int i) {
 
         String[] titles = getResources().getStringArray(R.array.titles);
         String[] dates = getResources().getStringArray(R.array.dates);
