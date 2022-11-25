@@ -17,8 +17,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class NotesListFragment extends Fragment {
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

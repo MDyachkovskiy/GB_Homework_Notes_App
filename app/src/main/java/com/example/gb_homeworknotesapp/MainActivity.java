@@ -12,13 +12,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            initLandFragment();
+        if (savedInstanceState == null) getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, new NotesListFragment())
+                .commit();
 
+        /*if (isLandscape()) {
+            initLandFragment();
         } else {
             initPortFragment();
-        }
+        }*/
     }
+
+    /*private boolean isLandscape() {
+        return getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
 
     private void initPortFragment() {
         String[] titles = getResources().getStringArray(R.array.titles);
@@ -42,5 +52,5 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.fragment_container_1,
                             new NotesListFragment()).commit();
         }
-    }
+    } */
 }
