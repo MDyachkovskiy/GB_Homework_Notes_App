@@ -2,27 +2,38 @@ package com.example.gb_homeworknotesapp;
 
 
 
+import static android.app.PendingIntent.getActivity;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.res.Resources;
-import android.os.BaseBundle;
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.drawable.IconCompat;
-import androidx.fragment.app.Fragment;
+import java.lang.reflect.Array;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-public class Data extends Fragment implements Parcelable{
+public class Data implements Parcelable {
 
     private static Data[] notes;
 
     private String title;
     private String description;
     private String creationDate;
+
+    String[] titles = new String[] { "Запись1", "Запись2", "Запись3", "Запись4","Запись5"};
+
+    String[] notes_body = new String[] {
+            "Не следует, однако, забывать о том, что дальнейшее развитие различных форм деятельности напрямую зависит от системы обучения кадров",
+            "Дорогие друзья, новая модель организационной деятельности создаёт предпосылки качественно новых шагов для соответствующих условий активизации?",
+            "Практический опыт показывает, что реализация намеченного плана развития требует определения",
+            "Значимость этих проблем настолько очевидна, что постоянное информационно-техническое обеспечение",
+            "Соображения..."};
+
+    String[] dates = new String[] {
+            "01.01.2022",
+            "02.03.2022",
+            "12.04.2022",
+            "18.08.2022",
+            "23.10.2022" };
 
     protected Data(Parcel in) {
         title = in.readString();
@@ -91,6 +102,8 @@ public class Data extends Fragment implements Parcelable{
         parcel.writeString(description);
     }
 
+
+
     {
         notes = new Data[5];
         for (int i = 0; i < notes.length; i++) {
@@ -101,15 +114,15 @@ public class Data extends Fragment implements Parcelable{
     @SuppressLint("DefaultLocale")
     private Data initData(int i) {
 
-        String[] titles = getResources().getStringArray(R.array.titles);
-        String[] dates = getResources().getStringArray(R.array.dates);
-        String[] notes = getResources().getStringArray(R.array.notes);
-
         String title = titles[i];
         String creationDate = dates[i];
-        String description = notes[i];
+        String description = notes_body[i];
 
         return new Data(title, description, creationDate);
     }
 
+
+
+
 }
+

@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 public class NotesBlankFragment extends Fragment {
 
-    private int index;
     static final String SELECTED_DATA = "data";
     private Data data;
 

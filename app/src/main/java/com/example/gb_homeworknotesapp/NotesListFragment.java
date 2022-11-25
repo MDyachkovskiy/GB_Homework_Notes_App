@@ -22,7 +22,6 @@ public class NotesListFragment extends Fragment {
 
     // объявляем объект для хранения значений из фрагмента
     private Data data;
-    private ViewGroup parent;
 
     // создание пустого конструктора
     public NotesListFragment () {
