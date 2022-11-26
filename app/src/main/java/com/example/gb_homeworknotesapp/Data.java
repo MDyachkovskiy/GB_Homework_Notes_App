@@ -5,30 +5,27 @@ package com.example.gb_homeworknotesapp;
 import static android.app.PendingIntent.getActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.lang.reflect.Array;
-
 public class Data implements Parcelable {
 
-    private static Data[] notes;
 
+    private static Data[] notes;
     private String title;
     private String description;
     private String creationDate;
 
-    String[] titles = new String[] { "Запись1", "Запись2", "Запись3", "Запись4","Запись5"};
+    public static String[] titles = new String[] { "Запись1", "Запись2", "Запись3", "Запись4","Запись5"};
 
-    String[] notes_body = new String[] {
+    public static String[] notes_body = new String[] {
             "Не следует, однако, забывать о том, что дальнейшее развитие различных форм деятельности напрямую зависит от системы обучения кадров",
             "Дорогие друзья, новая модель организационной деятельности создаёт предпосылки качественно новых шагов для соответствующих условий активизации?",
             "Практический опыт показывает, что реализация намеченного плана развития требует определения",
             "Значимость этих проблем настолько очевидна, что постоянное информационно-техническое обеспечение",
             "Соображения..."};
 
-    String[] dates = new String[] {
+    public static String[] dates = new String[] {
             "01.01.2022",
             "02.03.2022",
             "12.04.2022",
@@ -52,13 +49,7 @@ public class Data implements Parcelable {
         }
     };
 
-    public static Data[] getNotes() {
-        return notes;
-    }
 
-    public static void setNotes(Data[] notes) {
-        Data.notes = notes;
-    }
 
     public String getTitle() {
         return title;
@@ -102,17 +93,20 @@ public class Data implements Parcelable {
         parcel.writeString(description);
     }
 
-
-
-    {
+    static {
         notes = new Data[5];
         for (int i = 0; i < notes.length; i++) {
             notes[i] = initData(i);
         }
     }
 
-    @SuppressLint("DefaultLocale")
-    private Data initData(int i) {
+
+    public static Data[] getNotes() {
+        return notes;
+    }
+
+
+    public static Data initData(int i) {
 
         String title = titles[i];
         String creationDate = dates[i];

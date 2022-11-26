@@ -28,7 +28,8 @@ public class NotesBlankFragment extends Fragment {
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) requireActivity().getSupportFragmentManager().popBackStack();
+        if (savedInstanceState != null)
+            requireActivity().getSupportFragmentManager().popBackStack();
     }
 
     @Override

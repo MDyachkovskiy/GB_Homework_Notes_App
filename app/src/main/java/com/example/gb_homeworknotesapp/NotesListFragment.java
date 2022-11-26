@@ -63,6 +63,7 @@ public class NotesListFragment extends Fragment {
             tv.setText(Data.getNotes()[i].getTitle());
             tv.setTextSize(24);
             layoutView.addView(tv);
+
             final int index = i;
             tv.setOnClickListener(v -> {
                 showNotesBlankFragment(Data.getNotes()[index]);
@@ -100,7 +101,7 @@ public class NotesListFragment extends Fragment {
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.blank_fragment, blankFragment);
+        fragmentTransaction.add(R.id.fragment_container, blankFragment);
         fragmentTransaction.addToBackStack("");
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
