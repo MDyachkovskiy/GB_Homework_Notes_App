@@ -54,6 +54,7 @@ public class NotesListFragment extends Fragment {
         }
 
         initNotesList(view.findViewById(R.id.note_list_fragment));
+
     }
 
     private void initNotesList(View view) {
@@ -97,6 +98,7 @@ public class NotesListFragment extends Fragment {
     }
 
     private void showPortNotesBlank(Data data) {
+
         NotesBlankFragment blankFragment = NotesBlankFragment.newInstance(data);
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
