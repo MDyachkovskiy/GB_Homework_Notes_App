@@ -6,4 +6,6 @@
     <string name="note_date">Дата создания заметки</string>
     <string name="note_body">Напишите вашу заметку</string>
     <string name="new_note_btn">Новая заметка</string>
+    <string name="backBtn_text">назад</string>
+    <string name="save_btn_text">сохранить</string>
 </resources>

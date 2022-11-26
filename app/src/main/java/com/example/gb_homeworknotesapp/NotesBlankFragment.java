@@ -11,9 +11,9 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class NotesBlankFragment extends Fragment {
@@ -44,6 +44,12 @@ public class NotesBlankFragment extends Fragment {
 
         Bundle arguments = getArguments();
 
+        FloatingActionButton buttonBack = (FloatingActionButton) view.findViewById(R.id.btnBack);
+        if (buttonBack != null)
+            buttonBack.setOnClickListener(view1 -> {
+                requireActivity().getSupportFragmentManager().popBackStack();
+            });
+
         if (arguments != null) {
             data = arguments.getParcelable(SELECTED_DATA);
 
@@ -65,6 +71,9 @@ public class NotesBlankFragment extends Fragment {
 
             TextView tvDescription = view.findViewById(R.id.body_of_note);
             tvDescription.setText(data.getDescription());
+
+            TextView tvData = view.findViewById(R.id.date_of_note);
+            tvData.setText(data.getCreationDate());
         }
     }
 
