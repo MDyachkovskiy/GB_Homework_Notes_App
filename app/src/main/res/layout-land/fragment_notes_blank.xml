@@ -55,7 +55,7 @@
         android:layout_height="0dp"
         android:layout_marginVertical="20dp"
         android:background="@drawable/rounded_corner_note"
-        android:padding="16dp"
+        android:padding="8dp"
         android:gravity="start"
         android:text="@string/note_body"
         android:textSize="@dimen/note_text_size"

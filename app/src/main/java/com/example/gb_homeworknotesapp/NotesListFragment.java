@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 public class NotesListFragment extends Fragment {
 
@@ -47,6 +49,12 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        FloatingActionButton buttonAdd = (FloatingActionButton) view.findViewById(R.id.btnAdd);
+        buttonAdd.setOnClickListener(view1 -> {
+                showEmptyNoteBlank();
+            });
 
         // если в savedInstanceState что-то помещено, то извлекаем и помещаем в объект data
         if (savedInstanceState != null) {
@@ -85,6 +93,14 @@ public class NotesListFragment extends Fragment {
         }
     }
 
+    private void showEmptyNoteBlank (){
+        if (isLandscape()){
+            showEmptyLandNotesBlank();
+        } else {
+            showEmptyPortNotesBlank();
+        }
+    }
+
     private void showLandNotesBlank(Data data) {
         //создание нового фрагмента
         NotesBlankFragment blankFragment = NotesBlankFragment.newInstance(data);
@@ -108,4 +124,23 @@ public class NotesListFragment extends Fragment {
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
     }
+
+    private void showEmptyLandNotesBlank() {
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_2, new NotesBlankFragment())
+                .addToBackStack("tag")
+                .commit();
+    }
+
+    private void showEmptyPortNotesBlank() {
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new NotesBlankFragment())
+                .addToBackStack("tag")
+                .commit();
+    }
+
 }
