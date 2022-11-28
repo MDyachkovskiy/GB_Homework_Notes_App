@@ -17,6 +17,7 @@
         android:layout_margin="16dp"
         android:backgroundTint="@color/white"
         android:clickable="true"
+        style="?android:attr/borderlessButtonStyle"
         android:src="@drawable/ic_baseline_arrow_back_24"
         app:borderWidth="0dp" />
 
