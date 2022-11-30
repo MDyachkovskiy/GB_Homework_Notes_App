@@ -1,5 +1,6 @@
 package com.example.gb_homeworknotesapp;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,11 +10,13 @@ import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class NotesBlankFragment extends Fragment {
@@ -35,7 +38,50 @@ public class NotesBlankFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_notes_blank, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.note_menu, menu);
+
+        MenuItem menu_exit = menu.findItem(R.id.action_exit);
+        MenuItem menu_sort = menu.findItem(R.id.action_sorting);
+        MenuItem menu_search = menu.findItem(R.id.action_search);
+
+        if (menu_exit != null) {
+            menu_exit.setVisible(false);
+        }
+        if (menu_sort != null) {
+            menu_sort.setVisible(false);
+        }
+        if (menu_search != null) {
+            menu_search.setVisible(false);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.action_delete) {
+            Data.getNotes().remove(data);
+            data = null;
+            updateData();
+            if(!isLandscape()){
+                requireActivity().getSupportFragmentManager().popBackStack();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void updateData() {
+        for (Fragment fragment: requireActivity().getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof NotesListFragment) {
+                ((NotesListFragment) fragment).initNotesList();
+                break;
+            }
+        }
     }
 
     @Override
@@ -44,7 +90,7 @@ public class NotesBlankFragment extends Fragment {
 
         Bundle arguments = getArguments();
 
-        FloatingActionButton buttonBack = (FloatingActionButton) view.findViewById(R.id.btnBack);
+        ImageView buttonBack = view.findViewById(R.id.btnBack);
         if (buttonBack != null)
             buttonBack.setOnClickListener(view1 -> {
                 requireActivity().getSupportFragmentManager().popBackStack();
@@ -85,5 +131,9 @@ public class NotesBlankFragment extends Fragment {
         return fragment;
     }
 
+    private boolean isLandscape() {
+        return getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+    }
 
 }

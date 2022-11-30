@@ -1,8 +1,12 @@
 package com.example.gb_homeworknotesapp;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,16 +21,23 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         initDrawer();
+        //initToolbar();
 
         initFragmentLayout(savedInstanceState);
-
     }
+
+    /*private void initToolbar(){
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }*/
+
 
     private void initDrawer() {
 
@@ -47,37 +58,21 @@ public class MainActivity extends AppCompatActivity {
                 switch (id) {
                     case R.id.menuProfile:
 
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .addToBackStack("tag")
-                                .replace(R.id.fragment_container, new ProfileFragment())
-                                .commit();
+                        initProfileFragment();
                         return true;
                     case R.id.menuSettings:
 
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .addToBackStack("tag")
-                                .replace(R.id.fragment_container, new SettingsFragment())
-                                .commit();
+                       initSettingsFragment();
                         return true;
 
                     case R.id.menuSupport:
 
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .addToBackStack("tag")
-                                .replace(R.id.fragment_container, new SupportFragment())
-                                .commit();
+                        initSupportFragment();
                         return true;
 
                     case R.id.menuInfo:
 
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .addToBackStack("tag")
-                                .replace(R.id.fragment_container, new InformationFragment())
-                                .commit();
+                        initInformationFragment();
                         return true;
                 }
                 return false;
@@ -93,4 +88,92 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    private void initProfileFragment (){
+        if(isLandscape()) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack("tag")
+                    .replace(R.id.fragment_container_2, new ProfileFragment())
+                    .commit();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack("tag")
+                    .replace(R.id.fragment_container, new ProfileFragment())
+                    .commit();
+        }
+    }
+
+    private void initSettingsFragment (){
+        if(isLandscape()) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack("tag")
+                    .replace(R.id.fragment_container_2, new SettingsFragment())
+                    .commit();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack("tag")
+                    .replace(R.id.fragment_container, new SettingsFragment())
+                    .commit();
+        }
+    }
+
+    private void initSupportFragment (){
+        if(isLandscape()) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack("tag")
+                    .replace(R.id.fragment_container_2, new SupportFragment())
+                    .commit();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack("tag")
+                    .replace(R.id.fragment_container, new SupportFragment())
+                    .commit();
+        }
+    }
+
+    private void initInformationFragment (){
+        if(isLandscape()) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack("tag")
+                    .replace(R.id.fragment_container_2, new InformationFragment())
+                    .commit();
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack("tag")
+                    .replace(R.id.fragment_container, new InformationFragment())
+                    .commit();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_exit:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isLandscape() {
+        return getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+    }
 }
