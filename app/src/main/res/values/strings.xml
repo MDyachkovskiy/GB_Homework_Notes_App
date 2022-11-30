@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">GB_Homework Notes App</string>
+    <string name="toolbar_text">Мои заметки</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="note_title">Напишите заголовок</string>
+    <string name="note_date">Дата создания заметки</string>
+    <string name="note_body">Напишите вашу заметку</string>
+    <string name="new_note_btn">Новая заметка</string>
+    <string name="backBtn_text">назад</string>
+    <string name="save_btn_text">сохранить</string>
 </resources>
