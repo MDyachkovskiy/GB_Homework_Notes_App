@@ -17,19 +17,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class NotesBlankFragment extends Fragment {
 
     static final String SELECTED_DATA = "data";
-    private Data data;
+    private static Data data;
 
     // пустой конструктор
     public NotesBlankFragment() {
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null)
             requireActivity().getSupportFragmentManager().popBackStack();
@@ -63,20 +64,23 @@ public class NotesBlankFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.action_delete) {
+        if (item.getItemId() == R.id.action_delete) {
+
+            ShowDeleteDialogFragment();
             Data.getNotes().remove(data);
             data = null;
             updateData();
-            if(!isLandscape()){
+            if (!isLandscape()) {
                 requireActivity().getSupportFragmentManager().popBackStack();
+                Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();
             }
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateData() {
-        for (Fragment fragment: requireActivity().getSupportFragmentManager().getFragments()) {
+    private static void updateData() {
+        for (Fragment fragment : requireActivity().getSupportFragmentManager().getFragments()) {
             if (fragment instanceof NotesListFragment) {
                 ((NotesListFragment) fragment).initNotesList();
                 break;
@@ -110,6 +114,7 @@ public class NotesBlankFragment extends Fragment {
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     data.setTitle(charSequence.toString());
                 }
+
                 @Override
                 public void afterTextChanged(Editable editable) {
                 }
@@ -126,14 +131,27 @@ public class NotesBlankFragment extends Fragment {
     public static NotesBlankFragment newInstance(Data data) {
         NotesBlankFragment fragment = new NotesBlankFragment();
         Bundle args = new Bundle();
-        args.putParcelable(SELECTED_DATA,data);
+        args.putParcelable(SELECTED_DATA, data);
         fragment.setArguments(args);
         return fragment;
     }
 
-    private boolean isLandscape() {
+    private static boolean isLandscape() {
         return getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
     }
 
+    private void ShowDeleteDialogFragment() {
+        new DeleteDialogFragment().show(requireActivity().getSupportFragmentManager(), "DELETE_DIALOG");
+    }
+
+    public void DeleteNote() {
+        Data.getNotes().remove(data);
+        data = null;
+        updateData();
+        if (!isLandscape()) {
+            requireActivity().getSupportFragmentManager().popBackStack();
+            Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();
+        }
+    }
 }

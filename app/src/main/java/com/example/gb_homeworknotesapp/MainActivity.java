@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,8 @@ import com.example.gb_homeworknotesapp.menu_fragments.ProfileFragment;
 import com.example.gb_homeworknotesapp.menu_fragments.SettingsFragment;
 import com.example.gb_homeworknotesapp.menu_fragments.SupportFragment;
 import com.google.android.material.navigation.NavigationView;
+
+import java.security.AccessController;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -169,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_exit:
                 finish();
+                Toast.makeText(MainActivity.this, "Вы закрыли приложение", Toast.LENGTH_LONG).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);
