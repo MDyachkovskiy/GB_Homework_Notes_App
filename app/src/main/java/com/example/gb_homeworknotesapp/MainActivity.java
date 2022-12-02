@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         initFragmentLayout(savedInstanceState);
     }
 
+    //ошибки
+
     /*private void initToolbar(){
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
