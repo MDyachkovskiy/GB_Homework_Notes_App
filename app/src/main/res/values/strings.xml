@@ -1,11 +1,39 @@
 <resources>
+
+    <!-- Toolbars -->
     <string name="app_name">GB_Homework Notes App</string>
     <string name="toolbar_text">Мои заметки</string>
     <!-- TODO: Remove or change this placeholder text -->
+
+    <!-- Notes elements -->
     <string name="note_title">Напишите заголовок</string>
     <string name="note_date">Дата создания заметки</string>
-    <string name="note_body">Напишите вашу заметку</string>
+    <string name="note_body">Напишиту вашу заметку</string>
     <string name="new_note_btn">Новая заметка</string>
+
+    <!-- buttons -->
     <string name="backBtn_text">назад</string>
     <string name="save_btn_text">сохранить</string>
+
+    <!-- navigation menu structure -->
+    <string name="menu_profile">Профиль</string>
+    <string name="menu_notifications">Уведомления</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_information">Информация</string>
+    <string name="menu_support">Поддержка</string>
+
+    <!-- profile information -->
+    <string name="menu_profile_name">Иван Иванов</string>
+    <string name="menu_profile_email">Email</string>
+    <string name="menu_profile_tel">Телефон</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="toolbar_menu_exit">выход</string>
+    <string name="menu_delete">Удалить</string>
+    <string name="toolbar_menu_search">Поиск</string>
+    <string name="toolbar_menu_sorting">Сортировка</string>
+    <string name="menu_share">Поделиться</string>
+    <string name="menu_addPhoto">Добавить фото</string>
+
 </resources>

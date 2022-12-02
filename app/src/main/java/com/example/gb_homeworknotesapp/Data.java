@@ -8,10 +8,12 @@ import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 public class Data implements Parcelable {
 
 
-    private static Data[] notes;
+    private static ArrayList<Data> notes;
     private String title;
     private String description;
     private String creationDate;
@@ -94,14 +96,14 @@ public class Data implements Parcelable {
     }
 
     static {
-        notes = new Data[5];
-        for (int i = 0; i < notes.length; i++) {
-            notes[i] = initData(i);
+        notes = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            notes.add(initData(i));
         }
     }
 
 
-    public static Data[] getNotes() {
+    public static ArrayList<Data> getNotes() {
         return notes;
     }
 

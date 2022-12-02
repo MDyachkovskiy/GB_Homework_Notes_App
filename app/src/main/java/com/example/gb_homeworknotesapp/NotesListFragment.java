@@ -24,6 +24,7 @@ public class NotesListFragment extends Fragment {
 
     // объявляем объект для хранения значений из фрагмента
     private Data data;
+    View dataContainer;
 
     // создание пустого конструктора
     public NotesListFragment () {
@@ -31,6 +32,9 @@ public class NotesListFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState){
+        if (data == null){
+            data = Data.getNotes().get(0);
+        }
         outState.putParcelable(SELECTED_DATA, data);
         super.onSaveInstanceState(outState);
     }
@@ -61,21 +65,28 @@ public class NotesListFragment extends Fragment {
             data = savedInstanceState.getParcelable(SELECTED_DATA);
         }
 
+        dataContainer = view.findViewById(R.id.note_list_fragment);
+
         initNotesList(view.findViewById(R.id.note_list_fragment));
 
     }
 
+    public void initNotesList(){
+        initNotesList(dataContainer);
+    }
+
     private void initNotesList(View view) {
         LinearLayout layoutView = (LinearLayout) view;
-        for (int i = 0; i < Data.getNotes().length; i++) {
+        layoutView.removeAllViews();
+        for (int i = 0; i < Data.getNotes().size(); i++) {
             TextView tv = new TextView(getContext());
-            tv.setText(Data.getNotes()[i].getTitle());
+            tv.setText(Data.getNotes().get(i).getTitle());
             tv.setTextSize(24);
             layoutView.addView(tv);
 
             final int index = i;
             tv.setOnClickListener(v -> {
-                showNotesBlankFragment(Data.getNotes()[index]);
+                showNotesBlankFragment(Data.getNotes().get(index));
             });
         }
     }
