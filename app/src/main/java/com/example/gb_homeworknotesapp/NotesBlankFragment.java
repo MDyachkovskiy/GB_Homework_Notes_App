@@ -1,5 +1,7 @@
 package com.example.gb_homeworknotesapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -66,20 +68,13 @@ public class NotesBlankFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_delete) {
 
-            ShowDeleteDialogFragment();
-            Data.getNotes().remove(data);
-            data = null;
-            updateData();
-            if (!isLandscape()) {
-                requireActivity().getSupportFragmentManager().popBackStack();
-                Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();
-            }
-            return true;
+            ShowDeleteDialog();
+
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private static void updateData() {
+    private void updateData() {
         for (Fragment fragment : requireActivity().getSupportFragmentManager().getFragments()) {
             if (fragment instanceof NotesListFragment) {
                 ((NotesListFragment) fragment).initNotesList();
@@ -136,22 +131,33 @@ public class NotesBlankFragment extends Fragment {
         return fragment;
     }
 
-    private static boolean isLandscape() {
+    private boolean isLandscape() {
         return getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
     }
 
-    private void ShowDeleteDialogFragment() {
-        new DeleteDialogFragment().show(requireActivity().getSupportFragmentManager(), "DELETE_DIALOG");
+    private void ShowDeleteDialog() {
+        //new DeleteDialogFragment().show(requireActivity().getSupportFragmentManager(), "DELETE_DIALOG");
+        new AlertDialog.Builder(getContext())
+                .setTitle("Внимание!")
+                .setMessage("Подтвердите удаление заметки")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        DeleteNote();
+                    }
+                })
+                .setNegativeButton("Нет", null)
+                .show();
     }
 
-    public void DeleteNote() {
+    private void DeleteNote() {
         Data.getNotes().remove(data);
         data = null;
         updateData();
+        Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();
         if (!isLandscape()) {
             requireActivity().getSupportFragmentManager().popBackStack();
-            Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();
         }
     }
 }

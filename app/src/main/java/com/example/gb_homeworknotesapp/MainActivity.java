@@ -1,5 +1,7 @@
 package com.example.gb_homeworknotesapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
@@ -172,8 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_exit:
-                finish();
-                Toast.makeText(MainActivity.this, "Вы закрыли приложение", Toast.LENGTH_LONG).show();
+                ShowExitDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -182,5 +183,20 @@ public class MainActivity extends AppCompatActivity {
     private boolean isLandscape() {
         return getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    private void ShowExitDialog() {
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Внимание!")
+                .setMessage("Подтвердите выход из приложения")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                        Toast.makeText(MainActivity.this, "Вы закрыли приложение", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .setNegativeButton("Нет", null)
+                .show();
     }
 }
