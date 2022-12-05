@@ -4,9 +4,15 @@ package com.example.gb_homeworknotesapp;
 
 import static android.app.PendingIntent.getActivity;
 
-import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -102,7 +108,6 @@ public class Data implements Parcelable {
         }
     }
 
-
     public static ArrayList<Data> getNotes() {
         return notes;
     }
@@ -116,9 +121,6 @@ public class Data implements Parcelable {
 
         return new Data(title, description, creationDate);
     }
-
-
-
 
 }
 
