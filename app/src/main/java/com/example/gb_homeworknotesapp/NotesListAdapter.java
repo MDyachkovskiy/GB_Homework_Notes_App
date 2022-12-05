@@ -18,14 +18,13 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.View
         this.dataSource = dataSource;
     }
 
-
     @NonNull
     @Override
     public NotesListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.note_blank, parent, false);
 
-        return new ViewHolder(v);
+        return new NotesListAdapter.ViewHolder(v);
     }
 
     @Override

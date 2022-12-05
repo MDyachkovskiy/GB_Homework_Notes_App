@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.example.gb_homeworknotesapp.menu_fragments.InformationFragment;
 import com.example.gb_homeworknotesapp.menu_fragments.ProfileFragment;
@@ -31,20 +32,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_2);
 
-        initDrawer();
+        //initDrawer();
         //initToolbar();
+        //initFragmentLayout(savedInstanceState);
 
-        initFragmentLayout(savedInstanceState);
+        addFragment(NotesListFragment_2.newInstance());
+
     }
 
-    //ошибки
+    private void addFragment (Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+}
 
-    /*private void initToolbar(){
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-    }*/
+
+    /*
 
 
     private void initDrawer() {
@@ -200,3 +208,5 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 }
+
+     */
