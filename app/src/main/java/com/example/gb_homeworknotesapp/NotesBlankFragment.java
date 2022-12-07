@@ -25,7 +25,7 @@ import android.widget.Toast;
 public class NotesBlankFragment extends Fragment {
 
     static final String SELECTED_DATA = "data";
-    private static Data data;
+    private static NoteData data;
 
     // пустой конструктор
     public NotesBlankFragment() {
@@ -76,8 +76,8 @@ public class NotesBlankFragment extends Fragment {
 
     private void updateData() {
         for (Fragment fragment : requireActivity().getSupportFragmentManager().getFragments()) {
-            if (fragment instanceof NotesListFragment) {
-                ((NotesListFragment) fragment).initNotesList();
+            if (fragment instanceof NotesListFragment_2) {
+                ((NotesListFragment_2) fragment).initRecyclerView();
                 break;
             }
         }
@@ -123,7 +123,7 @@ public class NotesBlankFragment extends Fragment {
         }
     }
 
-    public static NotesBlankFragment newInstance(Data data) {
+    public static NotesBlankFragment newInstance(NoteData data) {
         NotesBlankFragment fragment = new NotesBlankFragment();
         Bundle args = new Bundle();
         args.putParcelable(SELECTED_DATA, data);

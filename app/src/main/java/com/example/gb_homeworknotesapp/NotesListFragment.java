@@ -65,9 +65,6 @@ public class NotesListFragment extends Fragment {
             data = savedInstanceState.getParcelable(SELECTED_DATA);
         }
 
-        dataContainer = view.findViewById(R.id.note_list_fragment);
-
-        initNotesList(view.findViewById(R.id.note_list_fragment));
 
     }
 
@@ -104,13 +101,7 @@ public class NotesListFragment extends Fragment {
         }
     }
 
-    private void showEmptyNoteBlank (){
-        if (isLandscape()){
-            showEmptyLandNotesBlank();
-        } else {
-            showEmptyPortNotesBlank();
-        }
-    }
+
 
     private void showLandNotesBlank(Data data) {
         //создание нового фрагмента

@@ -1,5 +1,7 @@
 package com.example.gb_homeworknotesapp;
 
+import android.os.Parcelable;
+
 public class NoteData {
     
     private String title;
@@ -22,5 +24,17 @@ public class NoteData {
 
     public String getCreationDate() {
         return creationDate;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
     }
 }

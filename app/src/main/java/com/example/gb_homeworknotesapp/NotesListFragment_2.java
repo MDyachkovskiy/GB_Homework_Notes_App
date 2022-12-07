@@ -1,8 +1,13 @@
 package com.example.gb_homeworknotesapp;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,9 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 public class NotesListFragment_2 extends Fragment {
 
+    static final String SELECTED_DATA = "data";
+    private NoteSource dataSource;
+    View dataContainer;
 
     public static NotesListFragment_2 newInstance() {
         return new NotesListFragment_2();
@@ -21,6 +31,16 @@ public class NotesListFragment_2 extends Fragment {
 
     public NotesListFragment_2() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+
+        if(dataSource== null) {
+            dataSource = (NoteSource) NoteSource.getNoteData(0);
+        }
+        outState.putParcelable(SELECTED_DATA, dataSource);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -42,6 +62,32 @@ public class NotesListFragment_2 extends Fragment {
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        FloatingActionButton buttonAdd = (FloatingActionButton) view.findViewById(R.id.btnAdd);
+        buttonAdd.setOnClickListener(view1 -> {
+            showEmptyNoteBlank();
+        });
+
+        // если в savedInstanceState что-то помещено, то извлекаем и помещаем в объект data
+        if (savedInstanceState != null) {
+            dataSource = savedInstanceState.getParcelable(SELECTED_DATA);
+        }
+
+        dataContainer = view.findViewById(R.id.note_list_fragment);
+
+        //initNotesList(view.findViewById(R.id.note_list_fragment));
+
+
+
+    }
+
+    public void initRecyclerView(){
+        initRecyclerView();
+    }
+
     private void initRecyclerView (RecyclerView recyclerView, NoteSource data) {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -49,5 +95,77 @@ public class NotesListFragment_2 extends Fragment {
 
         NotesListAdapter notesListAdapter = new NotesListAdapter(data);
         recyclerView.setAdapter(notesListAdapter);
+
+        notesListAdapter.setItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                showNotesBlankFragment(data.getNoteData(position));
+            }
+        });
+
     }
+
+    private void showNotesBlankFragment(NoteData data) {
+        if (isLandscape()) {
+            showLandNotesBlank(data);
+        } else {
+            showPortNotesBlank(data);
+        }
+    }
+
+    private boolean isLandscape() {
+        return getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    private void showLandNotesBlank(NoteData data) {
+        //создание нового фрагмента
+        NotesBlankFragment blankFragment = NotesBlankFragment.newInstance(data);
+
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container_2, blankFragment);
+        fragmentTransaction.addToBackStack("");
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
+    }
+
+    private void showPortNotesBlank(NoteData data) {
+
+        NotesBlankFragment blankFragment = NotesBlankFragment.newInstance(data);
+
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, blankFragment);
+        fragmentTransaction.addToBackStack("");
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
+    }
+
+    private void showEmptyNoteBlank (){
+        if (isLandscape()){
+            showEmptyLandNotesBlank();
+        } else {
+            showEmptyPortNotesBlank();
+        }
+    }
+
+    private void showEmptyLandNotesBlank() {
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_2, new NotesBlankFragment())
+                .addToBackStack("tag")
+                .commit();
+    }
+
+    private void showEmptyPortNotesBlank() {
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new NotesBlankFragment())
+                .addToBackStack("tag")
+                .commit();
+    }
+
 }
