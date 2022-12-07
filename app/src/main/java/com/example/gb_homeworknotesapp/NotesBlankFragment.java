@@ -154,7 +154,7 @@ public class NotesBlankFragment extends Fragment {
     }
 
     private void DeleteNote() {
-        NoteSource.getAllNotes().remove(note);
+        NoteSourceImpl.getAllNotes().remove(note);
         note = null;
         updateData();
         Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();

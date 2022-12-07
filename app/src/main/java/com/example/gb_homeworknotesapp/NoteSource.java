@@ -8,6 +8,4 @@ public interface NoteSource {
 
     int size();
 
-    List<NoteData> getAllNotes();
-
 }

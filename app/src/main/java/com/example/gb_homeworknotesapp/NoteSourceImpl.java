@@ -9,7 +9,7 @@ import java.util.List;
 
 public class NoteSourceImpl implements NoteSource {
 
-    private List<NoteData> dataSource;
+    private static List<NoteData> dataSource;
     private Resources resources;
 
     public NoteSourceImpl(Resources resources){
@@ -35,7 +35,7 @@ public class NoteSourceImpl implements NoteSource {
         return dataSource.get(position);
     }
 
-    public List<NoteData> getAllNotes(){
+    public static List<NoteData> getAllNotes(){
         return dataSource;
     }
 
