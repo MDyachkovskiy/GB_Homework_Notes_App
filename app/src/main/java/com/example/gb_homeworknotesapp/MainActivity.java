@@ -32,16 +32,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_2);
+        setContentView(R.layout.activity_main);
 
-        //initDrawer();
-        //initToolbar();
+        initDrawer();
+
         //initFragmentLayout(savedInstanceState);
 
         addFragment(NotesListFragment_2.newInstance());
 
-    }
-
+}
     private void addFragment (Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -49,10 +48,6 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(null)
                 .commit();
     }
-}
-
-
-    /*
 
 
     private void initDrawer() {
@@ -208,5 +203,3 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 }
-
-     */

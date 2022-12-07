@@ -21,7 +21,7 @@ public class NoteSourceImpl implements NoteSource {
         String[] descriptions = resources.getStringArray(R.array.descriptions);
         String[] creationDates = resources.getStringArray(R.array.creation_dates);
 
-        for (int i = 0; i < dataSource.size(); i++) {
+        for (int i = 0; i < 7; i++) {
             dataSource.add(new NoteData(titles[i], descriptions[i], creationDates[i]));
         }
 
