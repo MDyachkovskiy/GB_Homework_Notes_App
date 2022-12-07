@@ -29,7 +29,9 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull NotesListAdapter.ViewHolder holder, int position) {
+
         holder.setData(dataSource.getNoteData(position));
+
     }
 
     @Override
@@ -46,7 +48,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.View
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            title = itemView.findViewById(R.id.title_of_note);
+            title = itemView.findViewById(R.id.note_title);
             description = itemView.findViewById(R.id.note_description);
             creationDate = itemView.findViewById(R.id.note_creationDate);
         }

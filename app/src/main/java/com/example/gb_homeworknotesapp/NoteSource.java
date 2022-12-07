@@ -4,6 +4,6 @@ public interface NoteSource {
 
     NoteData getNoteData(int position);
 
-        int size();
+    int size();
 
 }
