@@ -73,19 +73,18 @@ public class NotesListFragment_2 extends Fragment {
         });*/
 
         // если в savedInstanceState что-то помещено, то извлекаем и помещаем в объект data
+
         if (savedInstanceState != null) {
             selectedNote =(NoteData) savedInstanceState.getParcelable(SELECTED_NOTE);
         }
 
-        if (isLandscape()){
-            showLandNotesBlank(selectedNote);
-        }
+        //if (isLandscape()){
+        //    showLandNotesBlank(selectedNote);
+        //}
 
         //dataContainer = view.findViewById(R.id.notes_recycler_view );
 
         //initRecyclerView((RecyclerView) dataContainer, dataSource);
-
-
 
     }
 

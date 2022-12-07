@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
         addFragment(NotesListFragment_2.newInstance());
 
+        if (isLandscape()){
+            addFragment(NotesListFragment_2.newInstance());
+        }
+
 }
     private void addFragment (Fragment fragment) {
         getSupportFragmentManager()
