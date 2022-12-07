@@ -21,8 +21,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class NotesListFragment_2 extends Fragment {
 
-    static final String SELECTED_DATA = "data";
-    private NoteSource dataSource;
+    static final String SELECTED_NOTE = "note";
+    private NoteData selectedNote;
+    private NoteSource data;
     View dataContainer;
 
     public static NotesListFragment_2 newInstance() {
@@ -36,10 +37,10 @@ public class NotesListFragment_2 extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
-        if(dataSource== null) {
-            dataSource = (NoteSource) NoteSource.getNoteData(0);
-        }
-        outState.putParcelable(SELECTED_DATA, dataSource);
+        //if(dataSource== null) {
+        //    dataSource = (NoteData) NoteSource.getNoteData(0);
+       // }
+        outState.putParcelable(SELECTED_NOTE, selectedNote);
         super.onSaveInstanceState(outState);
     }
 
@@ -55,7 +56,7 @@ public class NotesListFragment_2 extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.notes_recycler_view);
 
-        NoteSource data = new NoteSourceImpl(getResources()).init();
+        data = new NoteSourceImpl(getResources()).init();
 
         initRecyclerView(recyclerView, data);
 
@@ -66,19 +67,23 @@ public class NotesListFragment_2 extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FloatingActionButton buttonAdd = (FloatingActionButton) view.findViewById(R.id.btnAdd);
+        /*FloatingActionButton buttonAdd = (FloatingActionButton) view.findViewById(R.id.btnAdd);
         buttonAdd.setOnClickListener(view1 -> {
             showEmptyNoteBlank();
-        });
+        });*/
 
         // если в savedInstanceState что-то помещено, то извлекаем и помещаем в объект data
         if (savedInstanceState != null) {
-            dataSource = savedInstanceState.getParcelable(SELECTED_DATA);
+            selectedNote =(NoteData) savedInstanceState.getParcelable(SELECTED_NOTE);
         }
 
-        dataContainer = view.findViewById(R.id.note_list_fragment);
+        if (isLandscape()){
+            showLandNotesBlank(selectedNote);
+        }
 
-        //initNotesList(view.findViewById(R.id.note_list_fragment));
+        //dataContainer = view.findViewById(R.id.notes_recycler_view );
+
+        //initRecyclerView((RecyclerView) dataContainer, dataSource);
 
 
 
@@ -105,11 +110,11 @@ public class NotesListFragment_2 extends Fragment {
 
     }
 
-    private void showNotesBlankFragment(NoteData data) {
+    private void showNotesBlankFragment(NoteData note) {
         if (isLandscape()) {
-            showLandNotesBlank(data);
+            showLandNotesBlank(note);
         } else {
-            showPortNotesBlank(data);
+            showPortNotesBlank(note);
         }
     }
 
@@ -118,9 +123,9 @@ public class NotesListFragment_2 extends Fragment {
                 == Configuration.ORIENTATION_LANDSCAPE;
     }
 
-    private void showLandNotesBlank(NoteData data) {
+    private void showLandNotesBlank(NoteData note) {
         //создание нового фрагмента
-        NotesBlankFragment blankFragment = NotesBlankFragment.newInstance(data);
+        NotesBlankFragment blankFragment = NotesBlankFragment.newInstance(note);
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -130,9 +135,9 @@ public class NotesListFragment_2 extends Fragment {
         fragmentTransaction.commit();
     }
 
-    private void showPortNotesBlank(NoteData data) {
+    private void showPortNotesBlank(NoteData note) {
 
-        NotesBlankFragment blankFragment = NotesBlankFragment.newInstance(data);
+        NotesBlankFragment blankFragment = NotesBlankFragment.newInstance(note);
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

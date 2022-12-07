@@ -40,7 +40,7 @@
         android:layout_marginVertical="20dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:padding="16dp"
+        android:paddingStart="16dp"
         android:background="@drawable/rounded_corner_note"
         android:gravity="center_vertical"
         android:text="@string/note_title"
