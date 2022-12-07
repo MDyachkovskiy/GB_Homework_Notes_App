@@ -35,6 +35,10 @@ public class NoteSourceImpl implements NoteSource {
         return dataSource.get(position);
     }
 
+    public List<NoteData> getAllNotes(){
+        return dataSource;
+    }
+
     @Override
     public int size() {
         return dataSource.size();

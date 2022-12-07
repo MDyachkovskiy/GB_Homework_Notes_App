@@ -146,16 +146,15 @@ public class NotesBlankFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();
-                        //DeleteNote();
+                        DeleteNote();
                     }
                 })
                 .setNegativeButton("Нет", null)
                 .show();
     }
 
-    private void DeleteNote(int position) {
-        //note.getNoteData(position).remove(data);
+    private void DeleteNote() {
+        NoteSource.getAllNotes().remove(note);
         note = null;
         updateData();
         Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();
