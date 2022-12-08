@@ -35,7 +35,7 @@ public class NoteSourceImpl implements NoteSource {
         return dataSource.get(position);
     }
 
-    public static List<NoteData> getAllNotes(){
+    static public List<NoteData> getAllNotes(){
         return dataSource;
     }
 

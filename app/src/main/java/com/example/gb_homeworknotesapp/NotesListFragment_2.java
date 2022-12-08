@@ -9,22 +9,19 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-
-public class NotesListFragment_2 extends Fragment {
+public class NotesListFragment_2<dataContainer> extends Fragment {
 
     static final String SELECTED_NOTE = "note";
     private NoteData selectedNote;
     private NoteSource data;
-    View dataContainer;
+    RecyclerView dataContainer;
 
     public static NotesListFragment_2 newInstance() {
         return new NotesListFragment_2();
@@ -82,14 +79,14 @@ public class NotesListFragment_2 extends Fragment {
         //    showLandNotesBlank(selectedNote);
         //}
 
-        //dataContainer = view.findViewById(R.id.notes_recycler_view );
+        dataContainer = view.findViewById(R.id.notes_recycler_view );
 
         //initRecyclerView((RecyclerView) dataContainer, dataSource);
 
     }
 
     public void initRecyclerView(){
-        initRecyclerView();
+        initRecyclerView(this.dataContainer, (NoteSource) NoteSourceImpl.getAllNotes());
     }
 
     private void initRecyclerView (RecyclerView recyclerView, NoteSource data) {
