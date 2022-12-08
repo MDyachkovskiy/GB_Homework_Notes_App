@@ -39,9 +39,14 @@ public class NoteSourceImpl implements NoteSource {
         return dataSource;
     }
 
+    static public NoteSource getNewNotes(){
+        return (NoteSource) dataSource;
+    }
+
     @Override
     public int size() {
         return dataSource.size();
     }
+
 
 }

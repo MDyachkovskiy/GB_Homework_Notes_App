@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.List;
 
 
 public class NotesListFragment_2<dataContainer> extends Fragment {
@@ -22,6 +25,8 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
     private NoteData selectedNote;
     private NoteSource data;
     RecyclerView dataContainer;
+    static NotesListAdapter notesListAdapter;
+
 
     public static NotesListFragment_2 newInstance() {
         return new NotesListFragment_2();
@@ -70,26 +75,19 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
         });*/
 
         // если в savedInstanceState что-то помещено, то извлекаем и помещаем в объект data
-
         if (savedInstanceState != null) {
             selectedNote =(NoteData) savedInstanceState.getParcelable(SELECTED_NOTE);
         }
 
-        //if (isLandscape()){
-        //    showLandNotesBlank(selectedNote);
-        //}
-
         dataContainer = view.findViewById(R.id.notes_recycler_view );
-
-        //initRecyclerView((RecyclerView) dataContainer, dataSource);
 
     }
 
     public void initRecyclerView(){
-        initRecyclerView(this.dataContainer, (NoteSource) NoteSourceImpl.getAllNotes());
+        initRecyclerView(dataContainer, (NoteSource) NoteSourceImpl.getNewNotes());
     }
 
-    private void initRecyclerView (RecyclerView recyclerView, NoteSource data) {
+    private void initRecyclerView(RecyclerView recyclerView, NoteSource data) {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -97,13 +95,14 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
         NotesListAdapter notesListAdapter = new NotesListAdapter(data);
         recyclerView.setAdapter(notesListAdapter);
 
+        this.notesListAdapter = notesListAdapter;
+
         notesListAdapter.setItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 showNotesBlankFragment(data.getNoteData(position));
             }
         });
-
     }
 
     private void showNotesBlankFragment(NoteData note) {
@@ -167,6 +166,12 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
                 .replace(R.id.fragment_container, new NotesBlankFragment())
                 .addToBackStack("tag")
                 .commit();
+    }
+
+    public static void deleteNote(NoteData note) {
+        NoteSourceImpl.getAllNotes().remove(note);
+        int position = NoteSourceImpl.getAllNotes().indexOf(note);
+        notesListAdapter.notifyItemRemoved(position);
     }
 
 }

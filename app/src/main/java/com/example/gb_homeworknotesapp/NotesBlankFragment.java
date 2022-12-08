@@ -146,20 +146,14 @@ public class NotesBlankFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        DeleteNote();
+                        NotesListFragment_2.deleteNote(note);
+                        Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();
+                        if (!isLandscape()) {
+                            requireActivity().getSupportFragmentManager().popBackStack();
+                        }
                     }
                 })
                 .setNegativeButton("Нет", null)
                 .show();
-    }
-
-    private void DeleteNote() {
-        NoteSourceImpl.getAllNotes().remove(note);
-        note = null;
-        updateData();
-        Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();
-        if (!isLandscape()) {
-            requireActivity().getSupportFragmentManager().popBackStack();
-        }
     }
 }
