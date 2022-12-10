@@ -2,6 +2,9 @@ package com.example.gb_homeworknotesapp;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,12 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import java.util.List;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class NotesListFragment_2<dataContainer> extends Fragment {
@@ -28,12 +26,12 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
     private NotesListAdapter notesListAdapter;
 
 
-    public static NotesListFragment_2 newInstance() {
-        return new NotesListFragment_2();
-    }
-
     public NotesListFragment_2() {
         // Required empty public constructor
+    }
+
+    public static NotesListFragment_2 newInstance() {
+        return new NotesListFragment_2();
     }
 
     @Override
@@ -41,7 +39,7 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
 
         //if(dataSource== null) {
         //    dataSource = (NoteData) NoteSource.getNoteData(0);
-       // }
+        // }
         outState.putParcelable(SELECTED_NOTE, selectedNote);
         super.onSaveInstanceState(outState);
     }
@@ -65,23 +63,23 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*FloatingActionButton buttonAdd = (FloatingActionButton) view.findViewById(R.id.btnAdd);
+        FloatingActionButton buttonAdd = (FloatingActionButton) view.findViewById(R.id.btnAdd);
         buttonAdd.setOnClickListener(view1 -> {
-            showEmptyNoteBlank();
-        });*/
+            showNewNoteBlank();
+        });
 
         // если в savedInstanceState что-то помещено, то извлекаем и помещаем в объект data
         if (savedInstanceState != null) {
-            selectedNote =(NoteData) savedInstanceState.getParcelable(SELECTED_NOTE);
+            selectedNote = (NoteData) savedInstanceState.getParcelable(SELECTED_NOTE);
         }
 
 
     }
 
-    private void initView(View view){
-       recyclerView = view.findViewById(R.id.notes_recycler_view);
-       data = new NoteSourceImpl(getResources()).init();
-       initRecyclerView();
+    private void initView(View view) {
+        recyclerView = view.findViewById(R.id.notes_recycler_view);
+        data = new NoteSourceImpl(getResources()).init();
+        initRecyclerView();
     }
 
 
@@ -138,28 +136,28 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
         fragmentTransaction.commit();
     }
 
-    private void showEmptyNoteBlank (){
-        if (isLandscape()){
-            showEmptyLandNotesBlank();
+    private void showNewNoteBlank() {
+        if (isLandscape()) {
+            showLandNewNoteBlank();
         } else {
-            showEmptyPortNotesBlank();
+            showPortNewNoteBlank();
         }
     }
 
-    private void showEmptyLandNotesBlank() {
+    private void showLandNewNoteBlank() {
 
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container_2, new NotesBlankFragment())
+                .add(R.id.fragment_container_2, new NewNoteFragment())
                 .addToBackStack("tag")
                 .commit();
     }
 
-    private void showEmptyPortNotesBlank() {
+    private void showPortNewNoteBlank() {
 
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, new NotesBlankFragment())
+                .add(R.id.fragment_container, new NewNoteFragment())
                 .addToBackStack("tag")
                 .commit();
     }
@@ -168,6 +166,21 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
         int position = data.indexOf(note);
         data.deleteNote(position);
         notesListAdapter.notifyItemRemoved(position);
+    }
+
+    public void addNote(NoteData note) {
+        data.addNote(note);
+        notesListAdapter.notifyItemInserted(data.size() - 1);
+        recyclerView.scrollToPosition(data.size() - 1);
+    }
+
+    public void updateNote(int position, NoteData note) {
+        data.updateNote(position, note);
+        notesListAdapter.notifyDataSetChanged();
+    }
+
+    public int indexOf(NoteData note) {
+        return data.indexOf(note);
     }
 
 }

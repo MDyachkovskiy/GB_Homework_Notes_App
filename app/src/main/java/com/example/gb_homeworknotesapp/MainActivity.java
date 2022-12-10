@@ -10,8 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -24,8 +22,6 @@ import com.example.gb_homeworknotesapp.menu_fragments.SettingsFragment;
 import com.example.gb_homeworknotesapp.menu_fragments.SupportFragment;
 import com.google.android.material.navigation.NavigationView;
 
-import java.security.AccessController;
-
 public class MainActivity extends AppCompatActivity {
 
 
@@ -36,16 +32,15 @@ public class MainActivity extends AppCompatActivity {
 
         initDrawer();
 
-        //initFragmentLayout(savedInstanceState);
-
         addFragment(NotesListFragment_2.newInstance());
 
-        if (isLandscape()){
+        if (isLandscape()) {
             addFragment(NotesListFragment_2.newInstance());
         }
 
-}
-    private void addFragment (Fragment fragment) {
+    }
+
+    private void addFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
@@ -77,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.menuSettings:
 
-                       initSettingsFragment();
+                        initSettingsFragment();
                         return true;
 
                     case R.id.menuSupport:
@@ -95,16 +90,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void initFragmentLayout(Bundle savedInstanceState) {
-
-        if (savedInstanceState == null) getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, new NotesListFragment_2())
-                .commit();
-    }
-
-    private void initProfileFragment (){
-        if(isLandscape()) {
+    private void initProfileFragment() {
+        if (isLandscape()) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .addToBackStack("tag")
@@ -119,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initSettingsFragment (){
-        if(isLandscape()) {
+    private void initSettingsFragment() {
+        if (isLandscape()) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .addToBackStack("tag")
@@ -135,8 +122,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initSupportFragment (){
-        if(isLandscape()) {
+    private void initSupportFragment() {
+        if (isLandscape()) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .addToBackStack("tag")
@@ -151,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initInformationFragment (){
-        if(isLandscape()) {
+    private void initInformationFragment() {
+        if (isLandscape()) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .addToBackStack("tag")

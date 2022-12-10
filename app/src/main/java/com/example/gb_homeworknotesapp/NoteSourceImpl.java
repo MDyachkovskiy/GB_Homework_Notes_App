@@ -1,8 +1,6 @@
 package com.example.gb_homeworknotesapp;
 
 import android.content.res.Resources;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +8,9 @@ import java.util.List;
 public class NoteSourceImpl implements NoteSource {
 
     private static List<NoteData> dataSource;
-    private Resources resources;
+    private final Resources resources;
 
-    public NoteSourceImpl(Resources resources){
+    public NoteSourceImpl(Resources resources) {
         this.resources = resources;
         dataSource = new ArrayList<>(7);
     }
@@ -35,14 +33,6 @@ public class NoteSourceImpl implements NoteSource {
         return dataSource.get(position);
     }
 
-    static public List<NoteData> getAllNotes(){
-        return dataSource;
-    }
-
-    static public NoteSource getNewNotes(){
-        return (NoteSource) dataSource;
-    }
-
     @Override
     public int size() {
         return dataSource.size();
@@ -63,7 +53,7 @@ public class NoteSourceImpl implements NoteSource {
         dataSource.add(note);
     }
 
-    public int indexOf (NoteData note) {
+    public int indexOf(NoteData note) {
         return dataSource.indexOf(note);
     }
 }

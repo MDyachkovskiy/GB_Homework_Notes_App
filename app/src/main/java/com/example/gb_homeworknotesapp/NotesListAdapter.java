@@ -8,17 +8,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.ViewHolder>{
+public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.ViewHolder> {
 
-    private NoteSource dataSource;
+    private final NoteSource dataSource;
     private OnItemClickListener itemClickListener;
-
-    public void setItemClickListener (OnItemClickListener itemClickListener){
-        this.itemClickListener = itemClickListener;
-    }
 
     public NotesListAdapter(NoteSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public void setItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     @NonNull
@@ -44,9 +44,9 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView title;
-        private TextView description;
-        private TextView creationDate;
+        private final TextView title;
+        private final TextView description;
+        private final TextView creationDate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,13 +60,13 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.View
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (itemClickListener != null)
-                        itemClickListener.onItemClick(view,position);
+                        itemClickListener.onItemClick(view, position);
                 }
             });
 
         }
 
-        public void setData (NoteData noteData) {
+        public void setData(NoteData noteData) {
             title.setText(noteData.getTitle());
             description.setText(noteData.getDescription());
             creationDate.setText(noteData.getCreationDate());
