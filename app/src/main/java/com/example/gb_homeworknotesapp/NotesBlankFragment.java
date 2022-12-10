@@ -25,7 +25,7 @@ import android.widget.Toast;
 public class NotesBlankFragment extends Fragment {
 
     static final String SELECTED_NOTE = "note";
-    private static NoteData note;
+    private NoteData note;
 
     // пустой конструктор
     public NotesBlankFragment() {
@@ -72,15 +72,6 @@ public class NotesBlankFragment extends Fragment {
 
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void updateData() {
-        for (Fragment fragment : requireActivity().getSupportFragmentManager().getFragments()) {
-            if (fragment instanceof NotesListFragment_2) {
-                ((NotesListFragment_2) fragment).initRecyclerView();
-                break;
-            }
-        }
     }
 
     @Override
@@ -146,7 +137,12 @@ public class NotesBlankFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        NotesListFragment_2.deleteNote(note);
+                       for (Fragment fragment: requireActivity()
+                                                .getSupportFragmentManager()
+                                                .getFragments())
+                           if (fragment instanceof NotesListFragment_2){
+                              ((NotesListFragment_2<?>) fragment).deleteNote(note);
+                           }
                         Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();
                         if (!isLandscape()) {
                             requireActivity().getSupportFragmentManager().popBackStack();

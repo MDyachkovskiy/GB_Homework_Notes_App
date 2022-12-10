@@ -8,4 +8,10 @@ public interface NoteSource {
 
     int size();
 
+    int indexOf(NoteData note);
+
+    void deleteNote (int position);
+    void updateNote (int position, NoteData note);
+    void addNote (NoteData note);
+
 }

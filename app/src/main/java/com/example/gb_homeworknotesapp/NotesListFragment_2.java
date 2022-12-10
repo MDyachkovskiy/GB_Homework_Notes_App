@@ -24,8 +24,8 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
     static final String SELECTED_NOTE = "note";
     private NoteData selectedNote;
     private NoteSource data;
-    RecyclerView dataContainer;
-    static NotesListAdapter notesListAdapter;
+    private RecyclerView recyclerView;
+    private NotesListAdapter notesListAdapter;
 
 
     public static NotesListFragment_2 newInstance() {
@@ -56,11 +56,7 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notes_list_2, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.notes_recycler_view);
-
-        data = new NoteSourceImpl(getResources()).init();
-
-        initRecyclerView(recyclerView, data);
+        initView(view);
 
         return view;
     }
@@ -79,23 +75,23 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
             selectedNote =(NoteData) savedInstanceState.getParcelable(SELECTED_NOTE);
         }
 
-        dataContainer = view.findViewById(R.id.notes_recycler_view );
 
     }
 
-    public void initRecyclerView(){
-        initRecyclerView(dataContainer, (NoteSource) NoteSourceImpl.getNewNotes());
+    private void initView(View view){
+       recyclerView = view.findViewById(R.id.notes_recycler_view);
+       data = new NoteSourceImpl(getResources()).init();
+       initRecyclerView();
     }
 
-    private void initRecyclerView(RecyclerView recyclerView, NoteSource data) {
+
+    private void initRecyclerView() {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        NotesListAdapter notesListAdapter = new NotesListAdapter(data);
+        notesListAdapter = new NotesListAdapter(data);
         recyclerView.setAdapter(notesListAdapter);
-
-        this.notesListAdapter = notesListAdapter;
 
         notesListAdapter.setItemClickListener(new OnItemClickListener() {
             @Override
@@ -168,9 +164,9 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
                 .commit();
     }
 
-    public static void deleteNote(NoteData note) {
-        NoteSourceImpl.getAllNotes().remove(note);
-        int position = NoteSourceImpl.getAllNotes().indexOf(note);
+    public void deleteNote(NoteData note) {
+        int position = data.indexOf(note);
+        data.deleteNote(position);
         notesListAdapter.notifyItemRemoved(position);
     }
 
