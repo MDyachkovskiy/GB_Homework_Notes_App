@@ -8,14 +8,12 @@ import java.util.List;
 public class NoteSourceImpl implements NoteSource {
 
     private static List<NoteData> dataSource;
-    private final Resources resources;
 
-    public NoteSourceImpl(Resources resources) {
-        this.resources = resources;
-        dataSource = new ArrayList<>(7);
+    public NoteSourceImpl() {
+        dataSource = new ArrayList<NoteData>();
     }
 
-    public NoteSourceImpl init() {
+    /*public NoteSourceImpl init() {
 
         String[] titles = resources.getStringArray(R.array.titles);
         String[] descriptions = resources.getStringArray(R.array.descriptions);
@@ -26,7 +24,7 @@ public class NoteSourceImpl implements NoteSource {
         }
 
         return this;
-    }
+    }*/
 
     @Override
     public NoteData getNoteData(int position) {
@@ -51,6 +49,16 @@ public class NoteSourceImpl implements NoteSource {
     @Override
     public void addNote(NoteData note) {
         dataSource.add(note);
+    }
+
+    @Override
+    public void setNewData(List<NoteData> dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    @Override
+    public List<NoteData> getNoteData() {
+        return dataSource;
     }
 
     public int indexOf(NoteData note) {
