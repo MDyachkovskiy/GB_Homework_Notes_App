@@ -1,5 +1,7 @@
 package com.example.gb_homeworknotesapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -17,19 +19,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class NotesBlankFragment extends Fragment {
 
-    static final String SELECTED_DATA = "data";
-    private Data data;
+    static final String SELECTED_NOTE = "note";
+    private static NoteData note;
 
     // пустой конструктор
     public NotesBlankFragment() {
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null)
             requireActivity().getSupportFragmentManager().popBackStack();
@@ -63,22 +66,18 @@ public class NotesBlankFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.action_delete) {
-            Data.getNotes().remove(data);
-            data = null;
-            updateData();
-            if(!isLandscape()){
-                requireActivity().getSupportFragmentManager().popBackStack();
-            }
-            return true;
+        if (item.getItemId() == R.id.action_delete) {
+
+            ShowDeleteDialog();
+
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void updateData() {
-        for (Fragment fragment: requireActivity().getSupportFragmentManager().getFragments()) {
-            if (fragment instanceof NotesListFragment) {
-                ((NotesListFragment) fragment).initNotesList();
+        for (Fragment fragment : requireActivity().getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof NotesListFragment_2) {
+                ((NotesListFragment_2) fragment).initRecyclerView();
                 break;
             }
         }
@@ -90,17 +89,11 @@ public class NotesBlankFragment extends Fragment {
 
         Bundle arguments = getArguments();
 
-        ImageView buttonBack = view.findViewById(R.id.btnBack);
-        if (buttonBack != null)
-            buttonBack.setOnClickListener(view1 -> {
-                requireActivity().getSupportFragmentManager().popBackStack();
-            });
-
         if (arguments != null) {
-            data = arguments.getParcelable(SELECTED_DATA);
+            note = arguments.getParcelable(SELECTED_NOTE);
 
             TextView tvTitle = view.findViewById(R.id.title_of_note);
-            tvTitle.setText(data.getTitle());
+            tvTitle.setText(note.getTitle());
             tvTitle.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -108,25 +101,33 @@ public class NotesBlankFragment extends Fragment {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    data.setTitle(charSequence.toString());
+                    note.setTitle(charSequence.toString());
                 }
+
                 @Override
                 public void afterTextChanged(Editable editable) {
                 }
             });
 
             TextView tvDescription = view.findViewById(R.id.body_of_note);
-            tvDescription.setText(data.getDescription());
+            tvDescription.setText(note.getDescription());
 
             TextView tvData = view.findViewById(R.id.date_of_note);
-            tvData.setText(data.getCreationDate());
+            tvData.setText(note.getCreationDate());
+
+            ImageView buttonBack = view.findViewById(R.id.btnBack);
+            if (buttonBack != null)
+                buttonBack.setOnClickListener(view1 -> {
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                });
+
         }
     }
 
-    public static NotesBlankFragment newInstance(Data data) {
+    public static NotesBlankFragment newInstance(NoteData note) {
         NotesBlankFragment fragment = new NotesBlankFragment();
         Bundle args = new Bundle();
-        args.putParcelable(SELECTED_DATA,data);
+        args.putParcelable(SELECTED_NOTE, note);
         fragment.setArguments(args);
         return fragment;
     }
@@ -136,4 +137,23 @@ public class NotesBlankFragment extends Fragment {
                 == Configuration.ORIENTATION_LANDSCAPE;
     }
 
+    private void ShowDeleteDialog() {
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("Внимание!")
+                .setMessage("Подтвердите удаление заметки")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        NotesListFragment_2.deleteNote(note);
+                        Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();
+                        if (!isLandscape()) {
+                            requireActivity().getSupportFragmentManager().popBackStack();
+                        }
+                    }
+                })
+                .setNegativeButton("Нет", null)
+                .show();
+    }
 }

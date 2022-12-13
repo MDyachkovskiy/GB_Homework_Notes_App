@@ -1,23 +1,30 @@
 package com.example.gb_homeworknotesapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.example.gb_homeworknotesapp.menu_fragments.InformationFragment;
 import com.example.gb_homeworknotesapp.menu_fragments.ProfileFragment;
 import com.example.gb_homeworknotesapp.menu_fragments.SettingsFragment;
 import com.example.gb_homeworknotesapp.menu_fragments.SupportFragment;
 import com.google.android.material.navigation.NavigationView;
+
+import java.security.AccessController;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,15 +35,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initDrawer();
-        //initToolbar();
 
-        initFragmentLayout(savedInstanceState);
+        //initFragmentLayout(savedInstanceState);
+
+        addFragment(NotesListFragment_2.newInstance());
+
+        if (isLandscape()){
+            addFragment(NotesListFragment_2.newInstance());
+        }
+
+}
+    private void addFragment (Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
-
-    /*private void initToolbar(){
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-    }*/
 
 
     private void initDrawer() {
@@ -84,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, new NotesListFragment())
+                .add(R.id.fragment_container, new NotesListFragment_2())
                 .commit();
     }
 
@@ -166,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_exit:
-                finish();
+                ShowExitDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -175,5 +190,20 @@ public class MainActivity extends AppCompatActivity {
     private boolean isLandscape() {
         return getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    private void ShowExitDialog() {
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Внимание!")
+                .setMessage("Подтвердите выход из приложения")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                        Toast.makeText(MainActivity.this, "Вы закрыли приложение", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .setNegativeButton("Нет", null)
+                .show();
     }
 }
