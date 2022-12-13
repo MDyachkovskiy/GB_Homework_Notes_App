@@ -4,13 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,14 +14,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.button.MaterialButton;
+
 
 public class NotesBlankFragment extends Fragment {
 
     static final String SELECTED_NOTE = "note";
-    private static NoteData note;
+    private NoteData note;
 
     // пустой конструктор
     public NotesBlankFragment() {
+    }
+
+    public static NotesBlankFragment newInstance(NoteData note) {
+        NotesBlankFragment fragment = new NotesBlankFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(SELECTED_NOTE, note);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -74,15 +81,6 @@ public class NotesBlankFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateData() {
-        for (Fragment fragment : requireActivity().getSupportFragmentManager().getFragments()) {
-            if (fragment instanceof NotesListFragment_2) {
-                ((NotesListFragment_2) fragment).initRecyclerView();
-                break;
-            }
-        }
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -94,20 +92,6 @@ public class NotesBlankFragment extends Fragment {
 
             TextView tvTitle = view.findViewById(R.id.title_of_note);
             tvTitle.setText(note.getTitle());
-            tvTitle.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    note.setTitle(charSequence.toString());
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                }
-            });
 
             TextView tvDescription = view.findViewById(R.id.body_of_note);
             tvDescription.setText(note.getDescription());
@@ -121,15 +105,30 @@ public class NotesBlankFragment extends Fragment {
                     requireActivity().getSupportFragmentManager().popBackStack();
                 });
 
-        }
-    }
+            MaterialButton btnSave = view.findViewById(R.id.btnSave);
 
-    public static NotesBlankFragment newInstance(NoteData note) {
-        NotesBlankFragment fragment = new NotesBlankFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(SELECTED_NOTE, note);
-        fragment.setArguments(args);
-        return fragment;
+            btnSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String newTitle = tvTitle.getText().toString();
+                    String newDescription = tvDescription.getText().toString();
+                    String newDate = tvData.getText().toString();
+                    NoteData newNote = new NoteData(newTitle, newDescription, newDate);
+
+                    for (Fragment fragment : requireActivity()
+                            .getSupportFragmentManager()
+                            .getFragments())
+                        if (fragment instanceof NotesListFragment_2) {
+                            int position = ((NotesListFragment_2<?>) fragment).indexOf(note);
+                            ((NotesListFragment_2<?>) fragment).updateNote(position, newNote);
+                        }
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                    Toast.makeText(getContext(), "Вы добавили новую заметку", Toast.LENGTH_LONG).show();
+
+                }
+            });
+
+        }
     }
 
     private boolean isLandscape() {
@@ -146,7 +145,12 @@ public class NotesBlankFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        NotesListFragment_2.deleteNote(note);
+                        for (Fragment fragment : requireActivity()
+                                .getSupportFragmentManager()
+                                .getFragments())
+                            if (fragment instanceof NotesListFragment_2) {
+                                ((NotesListFragment_2<?>) fragment).deleteNote(note);
+                            }
                         Toast.makeText(getContext(), "Вы удалили заметку", Toast.LENGTH_LONG).show();
                         if (!isLandscape()) {
                             requireActivity().getSupportFragmentManager().popBackStack();

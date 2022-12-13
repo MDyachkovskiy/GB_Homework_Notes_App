@@ -3,8 +3,19 @@ package com.example.gb_homeworknotesapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class NoteData implements Parcelable{
-    
+public class NoteData implements Parcelable {
+
+    public static final Creator<NoteData> CREATOR = new Creator<NoteData>() {
+        @Override
+        public NoteData createFromParcel(Parcel in) {
+            return new NoteData(in);
+        }
+
+        @Override
+        public NoteData[] newArray(int size) {
+            return new NoteData[size];
+        }
+    };
     private String title;
     private String description;
     private String creationDate;
@@ -21,36 +32,24 @@ public class NoteData implements Parcelable{
         creationDate = in.readString();
     }
 
-    public static final Creator<NoteData> CREATOR = new Creator<NoteData>() {
-        @Override
-        public NoteData createFromParcel(Parcel in) {
-            return new NoteData(in);
-        }
-
-        @Override
-        public NoteData[] newArray(int size) {
-            return new NoteData[size];
-        }
-    };
-
     public String getTitle() {
         return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getCreationDate() {
-        return creationDate;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
     }
 
     public void setCreationDate(String creationDate) {
