@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.ViewHolder> {
 
     private final NoteSource dataSource;
@@ -19,6 +21,11 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.View
 
     public void setItemClickListener(OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public void setNewData(List<NoteData> dataSource){
+        this.dataSource.setNewData(dataSource);
+        notifyDataSetChanged();
     }
 
     @NonNull
