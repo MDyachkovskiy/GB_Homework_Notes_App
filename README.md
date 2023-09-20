@@ -6,9 +6,7 @@ Educational project completed as part of the course: "Introduction to the Androi
 
 <h2>Project Screenshots:</h2>
 
-<img src="https://i.ibb.co.com/zFFXKFK/IMG-20230920-182939.jpg" alt="project-screenshot" width="200" height="400/"> 
-<img src="https://i.ibb.co.com/p2FgNjn/IMG-20230920-183007.jpg" alt="project-screenshot" width="200" height="400/"> 
-<img src="https://i.ibb.co.com/b7YpHmK/IMG-20230920-183151.jpg" alt="project-screenshot" width="200" height="400/">
+<img src="https://i.ibb.co.com/zFFXKFK/IMG-20230920-182939.jpg" alt="project-screenshot" width="200" height="400/"> <img src="https://i.ibb.co.com/p2FgNjn/IMG-20230920-183007.jpg" alt="project-screenshot" width="200" height="400/"> <img src="https://i.ibb.co.com/b7YpHmK/IMG-20230920-183151.jpg" alt="project-screenshot" width="200" height="400/">
 
   
   
