@@ -1,10 +1,13 @@
 package com.example.gb_homeworknotesapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 
 public class NotesListFragment_2<dataContainer> extends Fragment {
@@ -24,7 +32,8 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
     private NoteSource data;
     private RecyclerView recyclerView;
     private NotesListAdapter notesListAdapter;
-
+    private SharedPreferences sharedPreferences;
+    private static final String KEY = "KEY";
 
     public NotesListFragment_2() {
         // Required empty public constructor
@@ -78,18 +87,35 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
 
     private void initView(View view) {
         recyclerView = view.findViewById(R.id.notes_recycler_view);
-        data = new NoteSourceImpl(getResources()).init();
+        data = new NoteSourceImpl();
+                //new NoteSourceImpl(getResources()).init();
         initRecyclerView();
     }
 
 
     private void initRecyclerView() {
 
+        sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         notesListAdapter = new NotesListAdapter(data);
         recyclerView.setAdapter(notesListAdapter);
+
+        String savedData = sharedPreferences.getString(KEY, null);
+
+        if (savedData == null) {
+            Toast.makeText(getContext(), "Empty data", Toast.LENGTH_SHORT).show();
+        } else {
+            try {
+                Type type = new TypeToken<List<NoteData>>() {}.getType();
+                notesListAdapter.setNewData(new GsonBuilder().create().fromJson(savedData, type));
+            }
+            catch (Exception e){
+                Toast.makeText(getContext(), "Data saving error", Toast.LENGTH_SHORT).show();
+            }
+        }
 
         notesListAdapter.setItemClickListener(new OnItemClickListener() {
             @Override
@@ -166,17 +192,25 @@ public class NotesListFragment_2<dataContainer> extends Fragment {
         int position = data.indexOf(note);
         data.deleteNote(position);
         notesListAdapter.notifyItemRemoved(position);
+        String jsonNoteDataAfterDelete = new GsonBuilder().create().toJson(data.getNoteData());
+        sharedPreferences.edit().putString(KEY, jsonNoteDataAfterDelete).apply();
     }
 
     public void addNote(NoteData note) {
         data.addNote(note);
         notesListAdapter.notifyItemInserted(data.size() - 1);
         recyclerView.scrollToPosition(data.size() - 1);
+
+        String jsonNoteDataAfterAdd = new GsonBuilder().create().toJson(data.getNoteData());
+        sharedPreferences.edit().putString(KEY, jsonNoteDataAfterAdd).apply();
     }
 
     public void updateNote(int position, NoteData note) {
         data.updateNote(position, note);
         notesListAdapter.notifyDataSetChanged();
+
+        String jsonNoteDataAfterUpdate = new GsonBuilder().create().toJson(data.getNoteData());
+        sharedPreferences.edit().putString(KEY, jsonNoteDataAfterUpdate).apply();
     }
 
     public int indexOf(NoteData note) {

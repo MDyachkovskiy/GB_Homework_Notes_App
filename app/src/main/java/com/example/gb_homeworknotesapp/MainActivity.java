@@ -24,6 +24,7 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Homework 12
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
